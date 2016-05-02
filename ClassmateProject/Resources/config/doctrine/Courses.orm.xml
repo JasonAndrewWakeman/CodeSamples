@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Project\ClassMateBundle\Entity\Courses" table="courses">
+    <id name="courseId" type="integer" column="course_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="creatorUserId" type="integer" column="creator_user_id" nullable="true"/>
+    <field name="courseName" type="string" column="course_name" length="60" nullable="false"/>
+    <field name="dateCreated" type="datetime" column="date_created" nullable="false"/>
+    <field name="dateModified" type="datetime" column="date_modified" nullable="true"/>
+    <field name="dateDeleted" type="datetime" column="date_deleted" nullable="true"/>
+    <field name="courseCode" type="string" column="course_code" length="45" nullable="false"/>
+  </entity>
+</doctrine-mapping>
