@@ -165,14 +165,14 @@ class_mate_enrollment:
     resource: "@ClassMateBundle/Resources/config/routing/enrollment.php"
     prefix:   /enrollment
 
-#################  AJAX Path called by searchWiki() in app2.js   retrieves the wikipedia page for search_term #########
+#####  AJAX Path called by searchWiki() in app2.js   retrieves the wikipedia page for search_term #########
 get_some:
     pattern: /get/some/wiki
     defaults: { _controller: ClassMateBundle:User:getSomeWiki }
     options:
         expose: true 
 
-#################  AJAX Path called by archiveWiki() and archiveNote() in app2.js. persists the desired note or wiki #########
+#####  AJAX Path called by archiveWiki() and archiveNote() in app2.js. persists the desired note or wiki #########
 archive_this: 
     pattern: /archive/{courseID}
     defaults: { _controller: ClassMateBundle:User:archiveThis }
@@ -180,14 +180,8 @@ archive_this:
         expose: true
 
 
-####unknown##########
-choose_course:
-    pattern: /choose
-    defaults: { _controller: ClassMateBundle:User:chooseCourse }
 
-
-
-############## AJAX Path called by displayExcerpt() in javascript of user_notes.html.  retrieves selected note/wiki #####
+##### AJAX Path called by displayExcerpt() in javascript of user_notes.html.  retrieves selected note/wiki #####
 display_excerpt: 
     pattern: /excerpt
     defaults: { _controller: ClassMateBundle:User:displayExcerpt }
