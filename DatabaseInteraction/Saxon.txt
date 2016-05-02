@@ -1,0 +1,175 @@
+
+/*
+Item 1. List Names of students and their mentors.
+
+*/
+
+
+<showtext>
+$Saxon:> 
+<ListOfStudentMentorPairs> {
+
+   for $s in doc("ComS363/Projects/Datasets/Student.xml")/Students/Student
+
+  let $m := doc("ComS363/Projects/Datasets/Faculty.xml")/Faculty/Faculty[FacultyID = $s/MentorID/text()]/FacultyID/text()
+
+  let $studentName :=  doc("ComS363/Projects/Datasets/Person.xml")/Persons/Person[ID = $s/StudentID/text()]/Name/text()
+
+ let $mentorName :=  doc("ComS363/Projects/Datasets/Person.xml")/Persons/Person[ID = $m]/Name/text()
+
+   return <StudentAndMentor> {" ", $studentName ,  ": " , $mentorName, " " } </StudentAndMentor>
+} 
+</ListOfStudentMentorPairs>; 
+</showtext>
+
+/*
+Item 2. For each classification, list the classification and the average GPA of students with that classification. Your query should not use any constants, such as "Freshman". 
+*/
+
+<showtext>
+$Saxon:> 
+<AverageGPAByClassification> {
+   for $c in distinct-values(doc("ComS363/Projects/Datasets/Student.xml")/Students/Student/Classification/text())
+
+
+   return <ClassLevel> {$c, ":", avg(doc("ComS363/Projects/Datasets/Student.xml")/Students/Student[Classification = $c]/GPA)
+}
+
+ </ClassLevel>
+} </AverageGPAByClassification>; 
+</showtext>
+
+/*
+Item 3. For each enrolled student, list his/her name and his/her mentor's name.
+*/
+
+
+<showtext>
+$Saxon:> 
+<EnrolledStudentsWithMentors> {
+   for $s in doc("ComS363/Projects/Datasets/Student.xml")/Students/Student
+  let $m := doc("ComS363/Projects/Datasets/Faculty.xml")/Faculty/Faculty[FacultyID = $s/MentorID/text()]/FacultyID/text()
+
+  let $studentName :=  doc("ComS363/Projects/Datasets/Person.xml")/Persons/Person[ID = $s/StudentID/text()]/Name/text()
+
+ let $mentorName :=  doc("ComS363/Projects/Datasets/Person.xml")/Persons/Person[ID = $m]/Name/text()
+
+   return if (exists(doc("ComS363/Projects/Datasets/Enrollment.xml")/Enrollments/Enrollment[StudentID = $s/StudentID/text()])
+)  then <StudentANDMentor> {" ", $studentName,  ": " , $mentorName, " " } </StudentANDMentor> else ""
+} </EnrolledStudentsWithMentors>; 
+</showtext>
+
+
+
+
+
+/*
+Item 4. List the Names of students who have at least one A in courses they are enrolled in. (Do not consider A- as an A.)
+*/
+
+<showtext>
+$Saxon:> 
+<AStudents> {
+   for $s in doc("ComS363/Projects/Datasets/Student.xml")/Students/Student
+  let $e := doc("ComS363/Projects/Datasets/Enrollment.xml")/Enrollments/Enrollment[StudentID = $s/StudentID/text()]
+
+  let $studentName :=  doc("ComS363/Projects/Datasets/Person.xml")/Persons/Person[ID = $s/StudentID/text()]/Name/text()
+
+   return if ($e/Grade = "A"
+)  then <AnAStudent> {" ", $studentName, " "} </AnAStudent> else ""
+} </AStudents>; 
+</showtext>
+
+
+/*
+Item 5. List the course codes of courses that are prerequisites for the course ?CS311?.
+*/
+
+<showtext>
+$Saxon:> 
+<PreRequisitesForCS311> {
+   for $c in doc("ComS363/Projects/Datasets/Course.xml")/Courses/Course[CourseCode = "CS311"]
+for $p in $c/PreReq
+   return
+ <PreReq> {" ", $p/text(), " "}  </PreReq>
+} </PreRequisitesForCS311>; 
+</showtext>
+
+
+/*
+Item 6. Restructure Student.xml by classification. There should be one element per classification in which the remaining information about students should be included in one element per student. 
+*/
+
+<showtext>
+$Saxon:> 
+  <RestructuredStudent>
+{
+    for $c in   
+   distinct-values(doc("ComS363/Projects/Datasets/Student.xml")/Students/Student/Classification/text())
+
+     return <Classification> 
+  {$c,  
+         for $s in doc("ComS363/Projects/Datasets/Student.xml")/Students/Student[Classification = $c] 
+  
+             return <Student>{$s/StudentID,  $s/GPA, $s/MentorID, $s/CreditHours } </Student>
+                                           
+   } </Classification>
+} </RestructuredStudent>; 
+</showtext>
+
+
+
+
+ /*Item 7. List the Name, and Rank of faculty who have a salary of 100K or higher.
+*/
+
+
+<showtext>
+$OOXQuery:> 
+<HighEarners> {
+   for $f in doc("ComS363/Projects/Datasets/UniversityOODB(ODMG).xml")//Faculty
+   where $f.Salary >= 100000
+   return <HighEarner> { $f.Name, $f.Rank } </HighEarner>
+} </HighEarners>;
+</showtext> 
+
+/*
+//Item 8. List Names of students and their mentors. (Note that if $s is a student, $s.Mentor will return a faculty //element)
+*/
+
+
+<showtext>
+$OOXQuery:> 
+<StudentsAndMentors> {
+   for $s in doc("ComS363/Projects/Datasets/UniversityOODB(ODMG).xml")//Student
+   return <Student> { $s.Name, <Mentor> {$s.Mentor.Name} </Mentor>} </Student>
+} </StudentsAndMentors>;
+</showtext> 
+
+
+/*
+Item 9. For each faculty, list his / her name, and classification and GPA of students that the faculty is mentoring. For each faculty there should be only one element, the info about students should be nested inside that element.  (Note that if $f is a faculty, $f.Mentoring will return a list of students. You can iterate over this list using the for clause.)
+
+*/
+
+
+<showtext>
+$OOXQuery:> 
+<FacultyMentorsWithMentees> {
+   for $f in doc("ComS363/Projects/Datasets/UniversityOODB(ODMG).xml")//Faculty
+
+   return <Mentor> { $f.Name, <Mentees> { for $s in $f.Mentoring return <Mentee> {$s.Classification, $s.GPA} </Mentee>} </Mentees>} </Mentor>
+} </FacultyMentorsWithMentees>;
+</showtext> 
+
+/*
+Item 10. For every offering, list course name, section, instructors' name and enrollment. 
+*/
+<showtext>
+$OOXQuery:> 
+<Offerings> {
+   for $o in doc("ComS363/Projects/Datasets/UniversityOODB(ODMG).xml")//Offering
+
+   return <Offering> { $o.CourseInfo.CourseName, $o.Section, $o.Instructor.Name, <numberEnrolled> { count($o.Enrollments) }</numberEnrolled>} </Offering>
+} </Offerings>;
+</showtext> 
