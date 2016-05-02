@@ -193,6 +193,7 @@ class UserController extends Controller
             $firstName=$request->get('firstname');
             $id=$request->get('id');
             $lastName=$request->get('lastname');
+            $userType=$request->get('userType');
             $email=$request->get('email');
             $dateModified=date('Y-m-d H:i:s');
 
@@ -208,6 +209,7 @@ class UserController extends Controller
 
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
+            $user->setUserType($userType);
             $user->setEmail($email);
             $user->setDateModified(new \DateTime($dateModified));
 
@@ -345,10 +347,20 @@ class UserController extends Controller
         $userCourseFiles = $repository3 -> findBy(array('archiveCourseId'=>$courseID, 'archiveUserId'=>$session->get('user')->getId()));
 
         if($courseConfirm){
-            //return $this->redirect($this->generateUrl('class_mate_next'), 301);
+            if($session->has('successMessage')){
+                $message=$session->get('successMessage');
+                $session->remove('successMessage');
+                return $this->render('ClassMateBundle:User:course_home.html.twig', array('successMessage'=>$message, 'course'=>$course, 'enrollment'=>$courseConfirm, 'courseFiles'=>$courseFiles, 'userCourseFiles'=>$userCourseFiles));
+            }
+            elseif($session->has('errorMessage')){
+                $message=$session->get('errorMessage');
+                $session->remove('errorMessage');
+                return $this->render('ClassMateBundle:User:course_home.html.twig', array('errorMessage'=>$message, 'course'=>$course, 'enrollment'=>$courseConfirm, 'courseFiles'=>$courseFiles, 'userCourseFiles'=>$userCourseFiles));
+            }
+
             return $this->render('ClassMateBundle:User:course_home.html.twig', array('course'=>$course, 'enrollment'=>$courseConfirm, 'courseFiles'=>$courseFiles, 'userCourseFiles'=>$userCourseFiles));
         }
-
+        $session->set('errorMessage' , "You do not have permission to access that page ");
         return $this->redirect($this->generateUrl('class_mate_next'), 301);
     }
 
@@ -675,7 +687,7 @@ class UserController extends Controller
 
     if($fileType =='docx'){
         $headers = array(
-        'Content-Type' =>  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        'Content-Type' =>  "application/msword",
           'Content-Disposition' => 'attachment; filename="'.$fileName.'.'.$fileType.'"'
         );  
         
@@ -1260,7 +1272,7 @@ class UserController extends Controller
             $course = new Courses();
 
             $course->setCourseName($courseName);
-            $course->setCreatorUserId($courseCode);
+            $course->setCreatorUserId($session->get('user')->getId());
             $course->setCourseCode($courseCode);
             $course->setDateCreated(new \DateTime($dateCreated));
 
