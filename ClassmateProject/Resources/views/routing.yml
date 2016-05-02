@@ -1,0 +1,204 @@
+class_mate_home:
+    pattern: /
+    defaults: { _controller: ClassMateBundle:Default:index }
+
+##################### ADMINISTRATIVE ROUTES ################################
+class_mate_user_list:
+    pattern: /admin/userlist 
+    defaults: { _controller: ClassMateBundle:User:userlist }
+
+class_mate_archive_list:
+    pattern: /admin/archivelist
+    defaults: { _controller: ClassMateBundle:Archive:archivelist }
+
+class_mate_courses_list:
+    pattern: /admin/courseslist
+    defaults: { _controller: ClassMateBundle:Courses:courseslist }
+
+class_mate_enrollment_list:
+    pattern: /admin/enrollmentlist
+    defaults: { _controller: ClassMateBundle:Enrollment:enrollmentlist }
+
+class_mate_edit_courses:
+    pattern: /admin/course/{courseID}/edit
+    defaults: { _controller: ClassMateBundle:Courses:edit }
+
+class_mate_edit_users:
+    pattern: /admin/user/{id}/edit
+    defaults: { _controller: ClassMateBundle:User:edit }
+
+class_mate_update_courses:
+    pattern: /admin/course/update
+    defaults: { _controller: ClassMateBundle:Courses:update }
+
+class_mate_update_users:
+    pattern: /admin/user/update
+    defaults: { _controller: ClassMateBundle:User:update }
+    
+
+#################### NAVIGATION BAR ROUTES ################################
+###renders Login page####
+class_mate_login:
+    pattern: /login
+    defaults: { _controller: ClassMateBundle:Default:login }
+###renders signup page###
+class_mate_signup:
+    pattern: /signup
+    defaults: { _controller: ClassMateBundle:Default:signup }
+###renders Login Page after clearing session ####
+class_mate_logout:
+    pattern: /logout
+    defaults: { _controller: ClassMateBundle:Default:logout }
+### Choose to go to Login or Sign UP page from here rendered welcome page####
+class_mate_welcome:
+    pattern: /welcome
+    defaults: { _controller: ClassMateBundle:Default:welcome }
+#### about the developers#####
+class_mate_about:
+    pattern: /about
+    defaults: { _controller: ClassMateBundle:User:about }
+#### Home page for administrative Tasks #####
+class_mate_admin:
+    pattern: /admin
+    defaults: { _controller: ClassMateBundle:User:admin }
+
+#### After logging in this page takes user to home page (chooseCourse.html) if they exist or to login if they do not ####
+class_mate_next:
+    pattern: /user_home
+    defaults: { _controller: ClassMateBundle:Default:next }
+
+#### If user has chosen a course this page takes them to user_notes.html, otherwise back to chooseCourse.html ####
+class_mate_user_notesOLD:
+    pattern: /my_notes2
+    defaults: { _controller: ClassMateBundle:User:usernotes }
+
+#### If user has chosen a course this page takes them to user_files.html, otherwise back to chooseCourse.html ####
+class_mate_user_files:
+    pattern: /user_files
+    defaults: { _controller: ClassMateBundle:User:userFiles }
+
+#### Displays all of the users notes and wikis from every class they listen to ####
+class_mate_user_notes:
+    pattern: /my_notes
+    defaults: { _controller: ClassMateBundle:User:myNotes }
+
+############################# UNSURE  ########################################################
+class_mate_get_max_archive:
+    pattern: /upl
+    defaults: { _controller: ClassMateBundle:Archive:getMaxArchive }
+    options:
+        expose: true 
+
+class_mate_upload:
+    pattern: /upload
+    defaults: { _controller: ClassMateBundle:User:upload }
+    options:
+        expose: true 
+
+class_mate_view:
+    pattern: /view
+    defaults: { _controller: ClassMateBundle:Courses:view }
+
+class_mate_archives:
+    pattern: /archives
+    defaults: { _controller: ClassMateBundle:User:archives }
+
+
+class_mate_course_page:
+    pattern: /courses/{courseName}/{userRole}/{courseID}
+    defaults: { _controller: ClassMateBundle:User:coursePage }
+
+class_mate_join_course:
+    pattern: /join_course
+    defaults: { _controller: ClassMateBundle:User:joinCourse }
+
+class_mate_create_course:
+    pattern: /create_course
+    defaults: { _controller: ClassMateBundle:User:createCourse }
+
+class_mate_upload_files:
+    pattern: /upload/files
+    defaults: { _controller: ClassMateBundle:User:uploadfiles }
+
+class_mate_join_course_action:
+    pattern: /join_course/join
+    defaults: { _controller: ClassMateBundle:User:joinCourseAction }
+
+class_mate_create_course_action:
+    pattern: /create_course/create
+    defaults: { _controller: ClassMateBundle:User:createCourseAction }
+
+#### AJAX Path called from downloadFileAjax() in user_files.html. Forces download of selected file. #####
+
+class_mate_force_download:
+    pattern: /download/{fileType}/{fileName}/{courseID}
+    defaults: { _controller: ClassMateBundle:User:forceDownload }
+    options:
+        expose: true
+
+#### Path which takes user to a live presentation of currently selected class. button is on course_home.html page ####
+class_mate_listener:
+    pattern: /listener/{courseID}/{courseName}
+    defaults: { _controller: ClassMateBundle:User:listener }
+
+#### Path which takes user to page they can begin presenting currently selected class. button is on course_home.html page ####
+
+
+class_mate_presenter:
+    pattern: /presenter/{courseID}
+    defaults: { _controller: ClassMateBundle:User:presenter }
+
+##### admin routing helper files #####
+class_mate_courses:
+    resource: "@ClassMateBundle/Resources/config/routing/courses.php"
+    prefix:   /courses
+
+class_mate_archive:
+    resource: "@ClassMateBundle/Resources/config/routing/archive.php"
+    prefix:   /archive
+
+class_mate_user:
+    resource: "@ClassMateBundle/Resources/config/routing/user.php"
+    prefix:   /user
+
+class_mate_enrollment:
+    resource: "@ClassMateBundle/Resources/config/routing/enrollment.php"
+    prefix:   /enrollment
+
+#################  AJAX Path called by searchWiki() in app2.js   retrieves the wikipedia page for search_term #########
+get_some:
+    pattern: /get/some/wiki
+    defaults: { _controller: ClassMateBundle:User:getSomeWiki }
+    options:
+        expose: true 
+
+#################  AJAX Path called by archiveWiki() and archiveNote() in app2.js. persists the desired note or wiki #########
+archive_this: 
+    pattern: /archive/{courseID}
+    defaults: { _controller: ClassMateBundle:User:archiveThis }
+    options: 
+        expose: true
+
+
+####unknown##########
+choose_course:
+    pattern: /choose
+    defaults: { _controller: ClassMateBundle:User:chooseCourse }
+
+
+
+############## AJAX Path called by displayExcerpt() in javascript of user_notes.html.  retrieves selected note/wiki #####
+display_excerpt: 
+    pattern: /excerpt
+    defaults: { _controller: ClassMateBundle:User:displayExcerpt }
+    options: 
+        expose: true
+
+
+class_mate_new_file_upload:
+    pattern: /fileUpload/courses/{courseName}/{userRole}/{courseID}
+    defaults: { _controller: ClassMateBundle:Archive:create }
+
+class_mate_new_file_upload_submit:
+    pattern: /fileUpload/courses/{courseName}/submit
+    defaults: { _controller: ClassMateBundle:Archive:newFileUploadSubmit }
