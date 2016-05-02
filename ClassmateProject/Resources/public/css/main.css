@@ -1,0 +1,316 @@
+
+
+/* -------------- Template Styling START --------------- */
+body{
+	background-color: #000 !important;
+	color: #FFF;
+}
+
+h2 {
+	color: #000;
+}
+
+a {
+	color: #00ADEF;
+	text-decoration: none;
+}
+
+.btn-primary {
+	background-image: linear-gradient(to bottom, #00ADEF 0%, #2d6ca2 100%);
+}
+
+.navbar-color .navbar-brand {
+	color: #fff;
+	font-weight: bold;
+	font-size: 24px;
+}
+
+.records_list{
+	margin-bottom: 40px;
+}
+
+.records_list thead tr{
+	border: 1px solid #00ADEF;
+	padding: 10px 0px 10px 5px;
+}
+
+.records_list th{
+	padding: 10px 0px 10px 0px;
+}
+
+.records_list td{
+	padding: 5px 0px 5px 0px;
+}
+
+.action_header{
+	width: 100px;
+}
+
+.navbar-blue {
+	background-color: #00ADEF;
+	background-image: none;
+}
+.navbar-blue .navbar-nav > .active > a {
+	background-image: -webkit-linear-gradient(top, #222 0%, #282828 100%);
+	background-image:      -o-linear-gradient(top, #222 0%, #282828 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#222), to(#282828));
+	background-image:         linear-gradient(to bottom, #222 0%, #282828 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff282828', GradientType=0);
+	background-repeat: repeat-x;
+	-webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+	box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+}
+.navbar-blue .navbar-brand,
+.navbar-blue .navbar-nav > li > a {
+	text-shadow: 0 -1px 0 rgba(255, 255, 255, .25);
+	color: #FFF;
+	border: 1px solid transparent;
+}
+
+.navbar-blue .navbar-nav > li > a:hover {
+	color: #00ADEF;
+	background-image: -webkit-linear-gradient(top, #222 0%, #282828 100%);
+	background-image:      -o-linear-gradient(top, #222 0%, #282828 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#222), to(#282828));
+	background-image:         linear-gradient(to bottom, #222 0%, #282828 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff282828', GradientType=0);
+	background-repeat: repeat-x;
+	-webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+	box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+	border: 1px solid #FFF;
+}
+
+.navbar-blue .navbar-brand:hover {
+	color: #635959;
+}
+
+.navbar-toggle .icon-bar {
+	background-color: #FFF;
+}
+
+.green {
+	background-color: #9EEA8E !important;
+	text-align: center !important;
+}
+
+.green strong {
+	color: #1D7E08 !important;
+}
+
+.blueH2 
+{
+    letter-spacing: 5px; 
+    font-size: .2in; 
+    color: #00ADEF; 
+    text-transform: uppercase; 
+}
+
+.container-sessionMessage {
+	top: 70px;
+	z-index: 1031;
+	min-height: 40px;
+	background-color: #E08383;
+	position: fixed;
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	right: 0;
+	left: 0;
+	padding: 10px;
+	text-align: center;
+}
+
+.container-sessionMessage strong {
+
+	color: #931010;
+}
+
+@media (min-width: 1200px) {
+	.container-sessionMessage {
+		width: 1170px;
+	}
+
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	.container-sessionMessage {
+		width: 970px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+	.container-sessionMessage {
+		width: 750px;
+	}
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+	
+}
+
+@media (max-width: 480px) {
+
+	.btn-primary {
+		font-size: 10px;
+	}
+
+}
+
+.main_container {
+    padding-top: 80px;
+}
+/* -------------- Template Styling END --------------- */
+
+
+/* -------------- Logged Out Home Page START ---------------- */
+.home_header_lg {
+	color: #FFF;
+	font-size: 60px;
+}
+
+/* --------------- Logged Out Home Page END ----------------- */
+
+
+/* -------------- Login Page START ---------------- */
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+.form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+    color: #00ADEF;
+	background-color: #000;
+}
+
+.remember_label {
+	color: #000;
+}
+
+/* --------------- Login Page END ----------------- */
+
+
+
+
+
+/* -------------- Signup Page START ---------------- */
+.signup_label {
+	color: #000;
+}
+
+.well h2 {
+	text-align: center;
+}
+
+.well input {
+	color: #00ADEF;
+	background-color: #000;
+}
+
+
+
+/* --------------- Signup Page END ----------------- */
+
+
+
+
+
+
+
+/* -------------- Logged In Home Page START ---------------- */
+.course-list-item {
+	color: #FFF;
+	font-size: 17px;
+}
+
+.course-list-item a {
+	color: #FFF;
+}
+
+.course-list-item a:hover {
+	color: #00ADEF;
+}
+
+
+/* --------------- Logged In Home Page END ----------------- */
+
+/* --------------- MY_NOTE PAGE END ----------------- */
+.note-display {
+    max-width: 500px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+
+#lightbox {
+    position: fixed;
+	top: 80px;
+	left: 0;
+	width: 70%;
+	height: 80%;
+	background: rgba(150, 150, 150, 0.97);
+	text-align: center;
+	border: 2px solid #FFF;
+	padding: 20px;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: scroll;
+}
+
+#lightbox p {
+    text-align:left; 
+    color:#000;  
+    font-size:15px; 
+}
+
+#lightbox img {
+    box-shadow:0 0 25px #111;
+    -webkit-box-shadow:0 0 25px #111;
+    -moz-box-shadow:0 0 25px #111;
+    max-width:940px;
+}
+/*---------------- MY_NOTE PAGE END --------------------*/
+
+
+
+
+
+/* -------------- Listener Page START ---------------- */
+.input_classID {
+    background-color: #FFF;
+    border: 2px solid #00ADEF;
+    color: #000;
+}
+
+/* --------------- Listener Page END ----------------- */
