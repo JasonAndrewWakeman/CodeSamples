@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- Archive Index -->
+
+<html lang="en">
+    <head>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Class Mate</title>
+
+        <link href="{{asset('bundles/classmate/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/classmate/css/main.css')}}" rel="stylesheet">
+{%block stylesheets %}
+{%endblock%}
+
+        <!--BIG C-->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="{{asset('bundles/classmate/js/jquery-1.11.1.min.js')}}"></script>
+
+    </head>
+
+    <body>
+        <div class="navbar navbar-blue navbar-fixed-top navbar-color" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed menu-button" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!--<a class="navbar-brand" href="{{path('class_mate_home')}}">Class Mate</a>-->
+                    <a class="navbar-brand" href="{{path('class_mate_home')}}" style="padding-top:0px;">
+                        <img src="{{asset('bundles/classmate/images/classmateinvert.png')}}"></img>
+                    </a>
+                    
+                </div>
+                <div class="collapse navbar-collapse">
+                  
+                  <ul class="nav navbar-nav">
+                    <li id="menu_user_home" class="active"><a href="{{path('class_mate_next')}}">Home</a></li>
+                    <li id="menu_about"><a href="{{path('class_mate_about')}}">About</a></li>
+                    <li id="menu_user_notes"><a href="{{path('class_mate_user_notes')}}">My Notes</a></li>
+                    {% if ( app.session.get('user') is defined ) and ( app.session.get('user').getUserType() == "A") %}
+                        <li id="menu_admin"><a href="{{path('class_mate_admin')}}">Admin</a></li>
+                    {%endif%}
+                    <li id="menu_logout"><a href="{{path('class_mate_logout')}}">Logout</a></li>
+                  </ul>
+                  
+                </div>
+            </div>
+        </div>
+        
+        <!-- This is a div that shows up with either and error message or a success message -->
+        <div id="sessionMessage" class="container container-sessionMessage" style="display:none;">
+            {% if errorMessage is defined%}
+                <strong>{{errorMessage}}</strong>
+
+            {% elseif successMessage is defined%}
+                <strong>{{successMessage}}</strong>
+            {%endif%}
+
+
+        </div>
+
+        <!-- Handles the showing of the error message -->
+        {% if errorMessage is defined%}
+            <script type="text/javascript">
+                $("#sessionMessage").show().delay(5000).fadeOut();
+            </script>
+
+        <!-- Handles the showing of the success message -->
+        {% elseif successMessage is defined%}
+            <script type="text/javascript">
+                $("#sessionMessage").addClass('green');
+                $("#sessionMessage").show().delay(5000).fadeOut();
+                var delay = setTimeout(function(){
+                    $("#sessionMessage").removeClass('green');
+                }, 10000);
+            </script>
+        {%endif%}
+
+{%block container %}
+{%endblock%}
+            <script src="{{asset('bundles/classmate/js/bootstrap.js')}}"></script>
+            <script src="{{asset('bundles/classmate/js/main.js')}}"></script>
+    {%block javascripts %}
+ {%endblock%}
+    </body>
+</html>
+
+
+
+
+
+
+
+
+

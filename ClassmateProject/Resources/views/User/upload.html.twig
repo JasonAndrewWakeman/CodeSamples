@@ -1,0 +1,88 @@
+{%extends "ClassMateBundle:Archive:index.html.twig"%}
+
+{% block container -%}
+    <style type ="text/css">
+		input 
+        {
+            color: #00ADEF; 
+            background-color: #fff
+        }
+        .fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+    </style>
+
+    <div class="container main_container">
+    <h2 class="blueH2" text-align = "center">Upload Files</h2><br>
+        
+     <!---   <form id="form" class="well col-md-offset-3 col-md-6" method="POST" action="{{path('class_mate_new_file_upload_submit', {'courseName': course.courseName})}}" data-validate="parsley">
+            
+            <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+            <div class="fileUpload btn btn-primary">
+                <span>Choose File</span>
+                <input id="uploadBtn" type="file" class="upload" />
+            </div>
+
+            <input type="hidden" name="courseId" value="{{course.courseId}}">
+            <input type="hidden" name="enrollmentId" value="{{enrollment.enrollmentId}}">
+
+            <div class="row">
+                <button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" id="uploadBtn" type="submit" >Submit Upload</button>
+            </div>
+
+            <div class="row">
+                <a class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" 
+                    href="{{ path('class_mate_course_page', {'courseName': course.courseName, 'userRole': enrollment.role, 'courseID': course.courseId }) }}"
+                    onClick="return(confirm('Your file has not been uploaded yet.  Are you sure you want to go back to the course page?')"
+                >
+                    Back To Your Course
+                </a>
+            </div>
+        </form>  ---->
+
+
+         {{ form(form) }}
+
+
+
+
+         <a class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" 
+                    href="{{ path('class_mate_course_page', {'courseName': course.courseName, 'userRole': enrollment.role, 'courseID': course.courseId }) }}"
+                    onClick="return(confirm('Your file has not been uploaded yet.  Are you sure you want to go back to the course page?')"
+                >
+                    Back To Your Course
+                </a>
+</div>
+{% endblock %}
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        //curActive = $(".navbar-nav li.active").attr('id');
+        //$("#"+curActive).attr('class', '');
+        //$("#menu_admin").attr('class', 'active');
+        
+    //    $("#project_classmatebundle_archive_submit").attr('class', 'btn btn-primary btn-xs');
+        $("#project_classmatebundle_archive_submit").attr('class', 'btn btn-primary btn-xs');
+
+        //Changes the page title
+       // document.title = "ClassMate - Admin - New Archive";
+       document.getElementById("uploadBtn").onchange = function () {
+    document.getElementById("uploadFile").value = this.value;
+};
+        
+    </script>
+{%endblock%}

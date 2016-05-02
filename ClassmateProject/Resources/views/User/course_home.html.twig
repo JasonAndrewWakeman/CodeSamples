@@ -1,0 +1,332 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+	
+
+
+
+{%block container %}
+
+	<style>
+		.whiteH3 {
+			letter-spacing: 5px;
+			font-size: 20px;
+			color: #FFF;
+			text-transform: uppercase;
+		}
+
+		.blueH3 {
+			letter-spacing: 5px;
+			font-size: 20px;
+			color: #00ADEF;
+			text-transform: none;
+
+		}
+
+
+
+		.blueH2 {
+			font-size: 25px;
+		}
+
+		.whiteH2-center {
+			letter-spacing: 5px;
+			font-size: 15px;
+			color: #FFF;
+			text-transform: uppercase;
+			text-align: center;
+			border-bottom: solid 1px #00ADEF;
+		}
+
+		.no_items_text {
+			color: #00ADEF;
+		}
+
+	</style>
+
+  	<div class="container main_container">   
+	    <br>
+
+	    {% if app.session is defined %}
+		    
+	    	
+	    	<br>
+	    	<h2 class="blueH2">{{course.courseName}}</h2>
+	    	<br>
+
+	    	{% if enrollment.role == 'L' %}
+	    		<br><br>
+		    	<a href="{{ path('class_mate_listener', {'courseID': course.courseId, 'courseName': course.courseName}) }}">
+		    		<button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4">View Live Presentation</button>
+		    	</a>
+		    	<br><br>
+
+		    {%endif%}
+
+	    	<!-- Shows buttons if logged in user is a presenter for this course -->
+		    {% if enrollment.role == 'P' %}
+
+		    	<h2 class="whiteH3">Your Course Code is: <strong class="blueH3">{{course.courseCode}}<strong></h2>
+		    	<br><br>
+		    	<a href="{{ path('class_mate_presenter', {'courseID': course.courseId, 'courseName': course.courseName}) }}">
+		    		<button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4">Start a Live Presentation</button>
+		    	</a>
+		    	<br><br>
+		    {%endif%}
+
+	    	<a href="{{ path('class_mate_new_file_upload', {'courseID': course.courseId, 'courseName': course.courseName, 'userRole': enrollment.role}) }}">
+	    		<button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4">Upload Files</button>
+	    	</a>
+
+		    
+	    	<br><br><br><br>
+
+	    	<!-- lightbox to show notes -->
+	    	<div id="lightbox" style="display:none;">
+			    <div id="content">
+			        
+			    </div>
+			    <br><br><br>
+			    <button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-5 col-lg-2" onclick="hideLB();" id="close_lb">Close Window</button>
+			</div>
+
+		    <div class="row">
+		    	<h2 class="whiteH2-center">Course Files</h2>
+
+		    	<ul id="fileList">
+	                {%if courseFiles|length > 0%}
+	                    {% for file in courseFiles %}
+	                        {%if (file.fileType != 'wiki') and (file.fileType != 'note') %}
+		                        <li class="course-list-item">
+		                            <a href="javascript:;" onClick="downloadFileAjax('{{file.fileName}}','{{file.fileType}}','{{file.archiveCourseId}}')">
+		                                {{ file.fileName }} ({{ file.fileType }})
+		                            </a>
+ 		                        </li>
+	                        {%endif%}
+	                    {% endfor %}
+	                {%endif%}
+                    <li class="course-list-item" id="no_file_item" style="display:none;">
+                        <span class="no_items_text">The presenter has not uploaded any files for this course</span>
+                    </li>
+	                
+	            </ul>
+		    </div>
+
+		    {% if enrollment.role == 'L' %}
+		    <br><br>
+		    <div class="row row-center">
+		    	<h2 class="whiteH2-center">Your Uploaded Files</h2>
+		    	
+		    	<ul id="userFilesList">
+	                {%if userCourseFiles|length > 0%}
+	                    {% for file in userCourseFiles %}
+	                        {%if (file.fileType != 'wiki') and (file.fileType != 'note') %}
+		                        <li class="course-list-item">
+		                            <a href="javascript:;" onClick="downloadFileAjax('{{file.fileName}}','{{file.fileType}}','{{file.archiveCourseId}}')">
+		                                {{ file.fileName }} ({{ file.fileType }})
+		                            </a>
+		                        </li>
+	                        {%endif%}
+	                    {% endfor %}
+	                {%endif%}
+                    <li class="course-list-item" id="no_user_file_item" style="display:none;">
+                        <span class="no_items_text">You have not uploaded any files for this course</span>
+                    </li>
+	                
+	            </ul>
+		    	
+
+		    </div>
+		    
+
+		    <br><br>
+		    <div class="row row-center">
+		    	
+		    	<h2 class="whiteH2-center">Your Archived Notes</h2>
+		    	
+		    	<ul id="userNotesList">
+	                {%if userCourseFiles|length > 0%}
+	                    {% for file in userCourseFiles %}
+	                        {%if file.fileType == 'note' %}
+		                        <li class="course-list-item">
+		                            <a href="javascript:;" onclick="displayNote('{{file.archiveId}}')">
+		                                {{ file.fileName }} {% if file.dateCreated %}({{ file.dateCreated|date('Y-m-d') }}){% endif %}
+		                            </a>
+		                        </li>
+	                        {%endif%}
+	                    {% endfor %}
+	                {%endif%}
+                    <li class="course-list-item" id="no_notes_item" style="display:none;">
+                        <span class="no_items_text">You have not archived any notes for this course</span>
+                    </li>
+	                
+	            </ul>
+
+		    </div>
+
+
+		    <br><br>
+		    <div class="row row-center">
+		    	
+		    	<h2 class="whiteH2-center">Your Archived Wikis</h2>
+		    	
+		    	<ul id="userWikisList">
+	                {%if userCourseFiles|length > 0%}
+	                    {% for file in userCourseFiles %}
+	                        {%if file.fileType == 'wiki' %}
+		                        <li class="course-list-item">
+		                            <a href="javascript:;" onclick="displayNote('{{file.archiveId}}')">
+		                                {{ file.fileName }} {% if file.dateCreated %}({{ file.dateCreated|date('Y-m-d') }}){% endif %}
+		                            </a>
+		                        </li>
+	                        {%endif%}
+	                    {% endfor %}
+	                {%endif%}
+                    <li class="course-list-item" id="no_wikis_item" style="display:none;">
+                        <span class="no_items_text">You have not archived any wikis for this course</span>
+                    </li>
+	                
+	            </ul>
+
+		    </div>
+			{%endif%}
+
+	    {%endif%}
+		
+
+
+    </div>
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+      //  curActive = $(".navbar-nav li.active").attr('id');
+      //  $("#"+curActive).attr('class', '');
+      //  $("#menu_home").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "{{course.courseName}}";
+        
+    </script>
+
+    <script>
+
+    $( document ).ready(function() {
+	  
+    	//displays the no files message
+		if($("#fileList li").length < 2){
+	  		$("#no_file_item").show();
+		}
+
+		//displays the no user files message
+		if($("#userFilesList li").length < 2){
+	  		$("#no_user_file_item").show();
+		}
+
+		//displays the no notes message
+		if($("#userNotesList li").length < 2){
+	  		$("#no_notes_item").show();
+		}
+
+		//displays the no wikis message
+		if($("#userWikisList li").length < 2){
+	  		$("#no_wikis_item").show();
+		}
+
+	});
+
+
+	 function downloadFileAjax(fName, fType, cID)
+        {
+
+        var downloadFileUrl = Routing.generate('class_mate_force_download', {'fileName': fName, 'fileType': fType, 'courseID': cID});
+    
+            $.ajax({
+              type: "POST",
+              url: downloadFileUrl,
+              data: {fileName: fName},
+              success: function(response, status, request) {
+
+              
+                var disp = request.getResponseHeader('Content-Disposition');
+                if (disp && disp.search('attachment') != -1) {
+                  var form = $('<form method="POST" action="' + downloadFileUrl + '">');
+                 // $.each(params, function(k, v) {
+                   // form.append($('<input type="hidden" name="' + k +
+                     //   '" value="' + v + '">'));
+                  //});
+                $('body').append(form);
+                form.submit();
+                }
+              }
+            });
+
+          
+        }
+
+	function displayNote(arcId) {
+
+	        var displayJotUrl = Routing.generate('display_excerpt');
+
+        $.ajax({
+            type: 'post',
+            url: displayJotUrl,
+            data: {archiveId: arcId, typeOf: 'note'},
+            success: function (response) 
+            {
+                var data = JSON.parse(response);     
+                //document.getElementById('displayNote').value = data.innerH;
+
+
+                activateLightbox(data.innerH);
+
+                
+       
+                return false;
+   
+            }
+        });
+    }
+
+    function hideLB() {
+    	$('#lightbox').hide();
+    }
+
+	function activateLightbox(data) {
+		
+		
+
+		
+		
+		
+		if ($('#lightbox').length > 0) { // #lightbox exists
+			
+			//place href as img src value
+			$('#content').html('<p>' + data + '" </p>');
+		   	
+			//show lightbox window - you could use .show('fast') for a transition
+			$('#lightbox').show();
+		}
+		
+		else { //#lightbox does not exist - create and insert (runs 1st time only)
+			
+			//create HTML markup for lightbox window
+			var lightbox = 
+			'<div id="lightbox">' +
+				'<p>Click to close</p>' +
+				'<div id="content">' + //insert clicked link's href into img src
+					'<p>' + data +'" </p><br><br><br><button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-2" onclick="hideLB();" id="close_lb">Close Window</button>' +
+				'</div>' +	
+			'</div>';
+				
+			//insert lightbox HTML into page
+			$('body').append(lightbox);
+		}
+		
+	}
+	
+
+</script>
+
+ {%endblock%}
+            

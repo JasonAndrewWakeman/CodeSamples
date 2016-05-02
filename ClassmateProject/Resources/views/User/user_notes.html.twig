@@ -1,0 +1,156 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+
+{%block stylesheets %}
+<style>
+
+.outerDisplay {
+background-color: black;
+  width: 100%;
+  height: 130px;
+  line-height: 15px;
+  position: absolute;
+  top: 50;
+  border: 5px #00ADEF;
+}
+
+.innerDisplay1 {
+  background-color: #00ADEF;
+  width: 100%;
+  height: 60px;
+  line-height: 15px;
+  position: absolute;
+ top: 5px;
+  border: 7px black;
+}
+
+.innerDisplay2 {
+  background-color: #00ADEF;
+  width: 100%;
+  height: 60px;
+  line-height: 15px;
+  position: absolute;
+  top: 69px;
+  border: 7px black;
+}
+
+
+
+   
+  
+</style>
+{%endblock%}
+
+
+{%block container %}
+
+
+  <div class=<"container main_container">
+
+    <br></br>
+    
+    <div class="outerDisplay" id = "disp">
+
+      <textarea id="displayNote" class="innerDisplay1" name ="displayNote" rows = '10' cols = '40' class ="innerDisplay" maxlength = "900" value='enter and save a note' autocomplete = 'off'>
+      </textarea>
+        
+      <br></br>
+         
+      <textarea id="displayWiki" name ="displayWiki" class="innerDisplay2" rows = '10' cols = '40' class ="innerDisplay" maxlength = "900" value='enter and save a note' autocomplete = 'off'>
+      </textarea>
+
+    </div>
+     <br></br>
+     <br></br>
+     <br></br>
+     <h2 class="blueH2">typed notes from {{archiveCourseId}}</h2>
+        
+        <ul id="archiveList">
+            {%if jots|length > 0 %}
+                {% for jot in jots %}
+                    <li class="course-list-item">
+                        <button id="saveNote" class="input_classID" onclick="displayJot('{{jot.archiveId}}')">{{jot.fileName}}</button>
+                    </li>
+                {% endfor %}
+            {%endif%}
+        </ul>
+  
+    <h2 class="blueH2">Saved Wikipedia Excerpts from {{archiveCourseId}}</h2>
+        <ul id="excerptList">
+            {%if wikiExcerpts|length > 0 %}
+                {% for excerpt in wikiExcerpts %}
+                    <li class="course-list-item">
+                       
+                        <button id="saveNote" class="input_classID" onclick="displayExcerpt('{{excerpt.archiveId}}')">{{excerpt.fileName}}</button>
+                    </li>
+                {% endfor %}
+            {%endif%}
+        </ul>
+   
+       <br> <br>
+  </div>
+
+{%endblock%}
+
+{%block javascripts %}
+
+
+
+    <script type="text/javascript">
+        
+
+
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+       $("#menu_signup").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Notes for {{courseName}}";
+
+        $(window).scroll(function(){
+            $("#disp").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "fast" );
+        });
+
+
+        function displayExcerpt(arcId)
+        {
+
+        var displayWikiUrl = Routing.generate('display_excerpt');
+    
+            $.ajax({
+                type: 'post',
+                url: displayWikiUrl,
+                data: {archiveId: arcId, typeOf: 'wiki'},
+                success: function (response) 
+                {
+                    var data = JSON.parse(response);     
+                    document.getElementById('displayWiki').innerHTML = data.innerH;
+           
+                    return false;
+       
+                }
+            });
+        }
+
+	      function displayJot(arcId) {
+
+ 	        var displayJotUrl = Routing.generate('display_excerpt');
+ 
+            $.ajax({
+                type: 'post',
+                url: displayJotUrl,
+                data: {archiveId: arcId, typeOf: 'note'},
+                success: function (response) 
+                {
+                    var data = JSON.parse(response);     
+                    document.getElementById('displayNote').value = data.innerH;
+           
+                    return false;
+       
+                }
+            });
+        }
+
+    </script>
+ {%endblock%}
+            

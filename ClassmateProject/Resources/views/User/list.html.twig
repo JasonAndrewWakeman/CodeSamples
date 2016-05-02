@@ -1,0 +1,73 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+
+{% block container -%}
+    <style type ="text/css">
+        
+    </style>
+
+    <div class="container main_container">
+        <h2 class="blueH2">User list</h2><br>
+
+        <table class="records_list col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <thead>
+                <tr>
+                    <th style="margin-left: 5px;">First Name</th>
+                    <th>Last Name</th>
+                    <th class="hidden-sm hidden-xs">Email</th>
+                    <th class="hidden-xs">Username</th>
+                    <th class="hidden-xs" style="text-align: center;">User Type</th>
+                    <th class="hidden-sm hidden-xs" style="text-align: center;">Date Created</th>
+                    <th class="action_header" style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td style="margin-left: 5px;"><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.firstName }}</a></td>
+                        <td>{{ entity.lastName }}</td>
+                        <td class="hidden-sm hidden-xs">{{ entity.email }}</td>
+                        <td class="hidden-xs">{{ entity.username }}</td>
+                        <td class="hidden-xs" style="text-align: center;">{{ entity.userType }}</td>
+                        <td class="hidden-sm hidden-xs" style="text-align: center;">{% if entity.dateCreated %}{{ entity.dateCreated|date('Y-m-d') }}{% endif %}</td>
+                        <td style="text-align: right;">
+                                <a class="btn btn-primary btn-xs" href="{{ path('user_show', { 'id': entity.id }) }}">Show</a>
+                           
+                                <a class="btn btn-primary btn-xs" href="{{ path('user_edit', { 'id': entity.id }) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--
+        <br>
+        <br>
+        <a class="btn btn-primary col-xs-7 col-sm-4 col-md-3 col-lg-2" href="{{ path('user_new') }}">
+            Create a New User
+        </a>
+           -->
+    </div>
+{% endblock %}
+
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_admin").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Admin - Users";
+        
+    </script>
+{%endblock%}
+
+
+
+
+
+
+
+
+

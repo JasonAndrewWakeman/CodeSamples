@@ -1,0 +1,170 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+
+{%block stylesheets %}
+<style>
+
+.outerDisplay {
+background-color: black;
+  width: 100%;
+  height: 130px;
+  line-height: 15px;
+  position: absolute;
+  top: 50;
+  border: 5px #00ADEF;
+}
+
+.innerDisplay1 {
+  background-color: #00ADEF;
+  width: 100%;
+  height: 60px;
+  line-height: 15px;
+  position: absolute;
+ top: 5px;
+  border: 7px black;
+}
+
+.innerDisplay2 {
+  background-color: #00ADEF;
+  width: 100%;
+  height: 60px;
+  line-height: 15px;
+  position: absolute;
+  top: 69px;
+  border: 7px black;
+}
+
+
+
+   
+  
+</style>
+{%endblock%}
+
+
+{%block container %}
+
+
+  <div class=<"container main_container">
+
+        <br></br>
+<div class="outerDisplay" id = "disp">
+
+     <textarea id="displayNote" class="innerDisplay1" name ="displayNote" rows = '10' cols = '40' class ="innerDisplay" maxlength = "900" value='enter and save a note' autocomplete = 'off'>
+    </textarea>
+        
+ <br></br>
+         
+     <textarea id="displayWiki" name ="displayWiki" class="innerDisplay2" rows = '10' cols = '40' class ="innerDisplay" maxlength = "900" value='enter and save a note' autocomplete = 'off'>
+    
+     </textarea>
+
+</div>
+     <br></br>
+     <br></br>
+     <br></br>
+ <h2 class="blueH2">Downloadable files from {{courseName}}</h2>
+        
+            <ul id="fileList">
+                {%if fileList|length > 0 %}
+                    {% for fil in fileList %}
+                        <li class="course-list-item">
+                           <button id="saveNote" class="input_classID" onclick="downloadFileAjax('pie')">{{fil.fileName}}</button>
+                       {#     <a href="/path/to/image" download="myimage"><img src="/path/to/image" /></a>
+                            <a href="{{ path('class_mate_file_download', {'courseName': lcourse.courseName, 'userRole': 'L', 'courseID': lcourse.courseId }}}"
+                   
+                      <a href="{{ path('class_mate_download_file', {'fileLocation': "ClassMateBundle:User:cs321hw07", 'fileType': 'fil.fileType' } ) }}" target="_blank">W3C Home Page</a>
+                      
+
+
+                      <a href="http://upload.wikimedia.org/wikipedia/commons/3/3f/Stephenson%27s_Rocket_drawing.jpg" download="myimage"><img src="http://upload.wikimedia.org/wikipedia/commons/3/3f/Stephenson%27s_Rocket_drawing.jpg" /></a>
+
+                      url() twig function (works like path() but with absolute uris) or the app.request.getUriForPath()
+
+   
+<a href="{{url('class_mate_download_file', {'fileLocation': "ClassMateBundle:User:cs321hw07", 'fileType': 'fil.fileType' })}" download="myimage"><img src="http://upload.wikimedia.org/wikipedia/commons/3/3f/Stephenson%27s_Rocket_drawing.jpg" /></a>}
+  
+
+<a href="drawing.jpg" download="myimage"><img src="drawing.jpg" /></a>
+
+   <h2 class="blueH2">{{url('class_mate_download_file', {'fileLocation': "ClassMateBundle:User:cs321hw07", 'fileType': 'fil.fileType' })}}</h2>
+
+    #}
+
+
+                        </li>
+                    {% endfor %}
+                {%endif%}
+            </ul>
+  
+<h2 class="blueH2">PDF's from {{courseName}}</h2>
+            <ul id="pdfList">
+                {%if pdfs|length > 0 %}
+                    {% for pdf in pdfs %}
+                        <li class="course-list-item">
+                       
+                            <button id="saveNote" class="input_classID" onclick="alert('{{pdf.archiveId}}')">{{pdf.fileName}}</button>
+                        </li>
+                    {% endfor %}
+                {%endif%}
+            </ul>
+    <br> <br>
+
+
+
+    
+
+  </div>
+
+  <div id = "div2"> </div>
+{%endblock%}
+
+{%block javascripts %}
+
+
+
+    <script type="text/javascript">
+        
+
+
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_signup").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "{{courseName}} files";
+
+       
+        function downloadFileAjax(floc)
+        {
+
+        var downloadFileUrl = Routing.generate('class_mate_force_download', {'fileName': "drawing", 'fileType': "jpg"});
+    
+            $.ajax({
+              type: "POST",
+              url: downloadFileUrl,
+              data: {flocation: floc},
+              success: function(response, status, request) {
+
+              
+                var disp = request.getResponseHeader('Content-Disposition');
+                if (disp && disp.search('attachment') != -1) {
+                  var form = $('<form method="POST" action="' + downloadFileUrl + '">');
+                 // $.each(params, function(k, v) {
+                   // form.append($('<input type="hidden" name="' + k +
+                     //   '" value="' + v + '">'));
+                  //});
+                $('body').append(form);
+                form.submit();
+                }
+              }
+            });
+
+          
+        }
+
+
+
+    </script>
+ {%endblock%}
+            

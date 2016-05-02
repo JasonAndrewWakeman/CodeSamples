@@ -1,0 +1,65 @@
+{%extends "ClassMateBundle:Courses:index.html.twig"%}
+
+{% block container -%}
+
+    <div class="container main_container">
+        <h2 class="blueH2">Courses list</h2><br>
+
+        <table class="records_list col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <thead>
+                <tr>
+                    <th class="hidden-xs">Course ID</th>
+                    <th>Course Name</th>
+                    <th class="hidden-xs" style="text-align: center;">Date Created</th>
+                    <th class="action_header" style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td class="hidden-xs">{{ entity.courseId }}</td>
+                        <td>{{ entity.courseName }}</td>
+                        <td class="hidden-xs" style="text-align: center;">{% if entity.dateCreated %}{{ entity.dateCreated|date('Y-m-d') }}{% endif %}</td>
+                        <td style="text-align: right;">
+                             <a class="btn btn-primary btn-xs"  href="{{ path('courses_show', { 'id': entity.courseId }) }}">Show</a>
+                             <a class="btn btn-primary btn-xs" href="{{ path('courses_edit', { 'id': entity.courseId }) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--
+        <br>
+        <br>
+		<a class ="btn btn-primary" href="{{ path('courses_new') }}">
+            Create a New Course
+        </a>
+        -->
+    </div>
+{% endblock %}
+
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_admin").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Admin - Courses";
+        
+    </script>
+{%endblock%}
+
+     
+
+
+
+
+
+
+
+
+

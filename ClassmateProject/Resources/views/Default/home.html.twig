@@ -1,0 +1,51 @@
+{%extends "ClassMateBundle:Default:index.html.twig"%}
+{%block stylesheets %}
+<style>
+    .blueH2 
+{
+    letter-spacing: 5px; 
+    font-size: .4in; 
+    color: #00ADEF; 
+    text-transform: uppercase; 
+    text-align: center;
+}
+    .homeCenter {
+        text-align: center;
+    }
+</style>
+{%endblock%}
+{%block container %}
+    <div class="container main_container">
+        <div class="row homeCenter">
+    	   <span class="home_header_lg blueH2">Welcome to ClassMate!</span>
+        </div>
+    	<br><br><br><br>
+    	<a href="{{path('class_mate_login')}}">
+    		<button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4">Sign in With Existing ClassMate Account</button>
+    	</a>
+    	<br><br>
+    	<a href="{{path('class_mate_signup')}}">
+    		<button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4">Create a New ClassMate Account</button>
+    	</a>
+    	
+    </div> 
+    
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_home").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Welcome to ClassMate";
+        
+    </script>
+{%endblock%}
+
+
+
+    

@@ -1,0 +1,287 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+	
+{%block stylesheets %}
+<style>
+
+  body {
+    background: white;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
+    -webkit-flex-direction: column;
+  }
+
+
+  #video {
+    width: 840px;
+    height: 580px;
+    border: 1px solid #e2e2e2;
+     white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    -ms-text-overflow:ellipsis;
+    float: left;
+
+  }
+
+   #display{
+      background:#00ADEF;
+   
+    overflow:hidden;
+    height: 250px;
+    text-align: left;
+      border: 3px black;
+    }
+    #noteDisplay{
+	    
+    position:relative;
+       background:#00ADEF;
+        overflow:hidden;
+    height: 250px;
+      text-align: left;
+      border: 3px black;
+    }
+
+   #textNote{
+    background: #00ADEF;
+    height: 100%;
+    width: 100%;
+   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+	
+   #saveNote{
+
+ position: absolute;
+ bottom:10px;
+ right:10px;
+}
+</style>
+{%endblock%}
+
+{%block container %}
+
+  <div class=<"container main_container">
+    <br>
+    <br>
+
+    <div class="video">
+      <input type="hidden"  class="input_classID" id="classid" value="{{course.courseCode}}" readonly>
+      
+      <div class="buttons">
+        <button class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" id="start">View Stream</button>
+  	  </div>
+  	  
+      <video id="video" controls></video>
+  	</div>
+
+    <audio id="audio" controls></audio>
+      <button class="btn btn-large btn-primary" id="startaudio">Listen to Audio</button>
+  		  
+    	<div class="buttons">
+      
+  	  <!--
+  	  <button id="pause">Pause</button>
+            <button id="resume">Resume</button>
+            <button id="stop">Stop Sharing</button>
+  	  -->
+  	</div>
+
+          
+   	<form id="wikiSearch">
+  	 <button id="saveWiki" type = "button" button class="btn btn-large btn-primary" onclick="archiveWiki(document.getElementById('display').innerHTML, 'wiki')">Archive This Wiki</button>
+           <input name="search_term" class ="input_classID" size="31" value="" autocomplete = 'off'>
+           <input name="submit" class="input_classID" type="submit" value="Get Wiki">
+           </form>
+          <div id="display">
+          </div>
+
+    	<br></br>
+  	<div class= "note_text" id ="noteDisplay">
+  	<textarea id="textNote" name ="noteText" rows = '10' cols = '40' class ="myText" maxlength = "900" value='enter and save a note' autocomplete = 'off'>
+  	</textarea>
+  	<button id="saveNote" class="input_classID" onclick="archiveNote(document.getElementById('textNote').value, 'note')">Archive This Note</button>
+  	</div>
+  	
+
+
+  	</div>
+  </div>
+{%endblock%}
+
+{%block javascripts %}
+
+  
+
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_signup").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "ClassMate - Listening to {{courseName}}";
+
+        var videoElement = document.getElementById('video');
+        var audioElement = document.getElementById('audio');
+        var peer = new Peer({key: '42fletdy618dj9k9'});
+        var idTextBox = document.getElementById("classid");
+        var id;
+        var searchTrm = "";
+        
+
+function archiveWiki() {
+  
+  var courseIden =  {{ cc|json_encode|raw }} ;
+  var archiveWikiUrl = Routing.generate('archive_this', {courseID : courseIden});
+  var tempStr = document.getElementById('display').innerHTML;
+  $.ajax({
+    type: 'post',
+    url: archiveWikiUrl,
+    data: {tempString: tempStr, typeOf: 'wiki', name: searchTrm},
+      success: function (response) { 
+
+        var data = JSON.parse(response);
+
+        
+          document.getElementById("display").innerHTML = "";
+           
+           return false;
+       
+      }
+  });
+}
+
+
+
+
+function archiveNote(value, typeOfArc) {
+  var tempStr = value;
+  var arcName = tempStr.substring(0, 50);
+  var courseIden =  {{ cc|json_encode|raw }} ;
+  var archiveTextUrl = Routing.generate('archive_this', {courseID : courseIden});
+
+  $.ajax({
+    type: 'post',
+    url: archiveTextUrl,
+    data: {tempString: tempStr, typeOf: typeOfArc, name: arcName },
+      success: function (response) {
+
+        var data = JSON.parse(response);
+
+        if(data.wasSuccessful == "true")
+        {
+          document.getElementById('textNote').value = "";
+        }
+        else
+        {        
+           return false;
+        }  
+      }
+  });
+}
+
+  $(function searchWiki() {
+    var getWikiUrl = Routing.generate('get_some');
+
+    $('#wikiSearch').on('submit', function (e) {
+
+      e.preventDefault();
+   
+      $.ajax({
+        type: 'post',
+        url: getWikiUrl,
+        data: $('#wikiSearch').serialize(),
+        success: function (response) {
+      
+        var data = JSON.parse(response);
+
+        if(data.wasSuccessful == "true")
+        {
+          searchTrm = data.searchTerm; 
+          document.getElementById("display").innerHTML= data.data1;
+        }
+        else
+        { 
+          document.getElementById("display").innerHTML = "We could not find a wikipedia page associated with your search term";
+        } 
+        
+        return false;
+      }
+
+    });
+
+  });
+
+});
+         
+
+peer.on('connection', function(conn) {
+  conn.on('data', function(data){
+    console.log(data);
+    if(data == 'novideo'){
+      alert('The video for this broadcast has not started.');
+    }
+    if(data == 'noaudio'){
+      alert('The audio for this broadcast has not started.');
+    }
+  });
+});
+
+peer.on('open', function(thisid) {
+  console.log('My peer ID is: ' + thisid);
+  id = thisid;
+
+});
+
+peer.on('error', function(err) {
+alert('There is no broadcast at this time.');
+});
+
+peer.on('call', function(call) {
+console.log('inside peer.on');
+call.answer();
+    call.on('stream', function(Stream) {
+        console.log('inside call.on');
+      if(Stream.getVideoTracks()[0]){
+        console.log(Stream.getVideoTracks()[0]);
+        videoElement.src = URL.createObjectURL(Stream);
+        console.log(Stream);
+      videoElement.play();
+      }
+      else{
+        audioElement.src = URL.createObjectURL(Stream);
+        console.log(Stream);
+        audioElement.play();
+      }
+    });
+
+  }, function(err) {
+    console.log('Failed to get local stream' ,err);
+  });
+
+document.getElementById('start').addEventListener('click', function() {
+  var conn = peer.connect(idTextBox.value);
+  conn.on('open', function(){
+  conn.send({
+    streamRequested: 'video',
+    ID: id
+  });
+  });
+});
+
+document.getElementById('startaudio').addEventListener('click', function() {
+  var conn = peer.connect(idTextBox.value);
+  conn.on('open', function(){
+  conn.send({
+    streamRequested: 'audio',
+    ID: id
+  });
+  });
+});
+
+    </script>
+ {%endblock%}
+            

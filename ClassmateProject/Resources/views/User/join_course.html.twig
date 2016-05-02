@@ -1,0 +1,56 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+{%block stylesheets %}
+<style>
+    ul.parsley-error-list li {
+          color: #FFF;
+          line-height: 13px;
+      }
+        input.parsley-error, textarea.parsley-error {
+            color: #B94A48 !important;
+            background-color: #D36363 !important;
+            border: 1px solid #EED3D7 !important;
+      }
+      .join_input{
+        color: #000;
+      }
+</style>
+{%endblock%}
+{%block container %}
+    <div class="container main_container">
+
+        <h2 class="blueH2">Join a Course</h2>
+        <br>
+        <br>
+    <div style="text-align: center;">    
+        <form id="form" class="col-md-offset-3 col-md-6" method="POST" action="{{path('class_mate_join_course_action')}}" data-validate="parsley">
+            <label class="join_label">Enter Course ID:</label>
+            <br>
+            <input type="text" name="courseCode" class="input-xlarge join_input" data-trigger="change" data-required="true">
+            <br>
+            <br>
+            <div class="row">
+                <button class="btn btn-primary" type="submit" >Join Course</button>
+            </div>
+        </form>
+    </div>
+    </div>
+    
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        //curActive = $(".navbar-nav li.active").attr('id');
+        //$("#"+curActive).attr('class', '');
+        //$("#menu_user_home").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "ClassMate - Join Course";
+        
+    </script>
+{%endblock%}
+
+
+
+    

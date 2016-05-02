@@ -1,0 +1,49 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+{%block stylesheets %}
+<style type ="text/css">
+            h2 {letter-spacing:     5px; font-size: .5in; color: #00ADEF; text-transform: uppercase; text-align: center; }
+             p {letter-spacing:     2px; font-size: .2in; color: #fff; text-transform: uppercase; text-align: center; }
+             p2 {letter-spacing:     2px; font-size: .2in; color: #fff;   margin-left: 2 px;}
+             p3 {letter-spacing:     2px; font-size: .2in; color: #fff;  text-align: right; }
+             top{}
+           
+</style>
+
+
+{%endblock%}
+{%block container %}
+    <div class="container main_container">
+      <top>
+          <img class="hidden-xs hidden-sm col-md-12 col-lg-12" src="{{asset('bundles/classmate/images/desk.jpg')}}">
+          <img class="col-xs-12 col-sm-12 hidden-md hidden-lg" src="{{asset('bundles/classmate/images/deskSmall.jpg')}}">
+      </top>
+      <br>
+      <br>
+      <br>
+      <img class="col-xs-12 col-sm-12 col-md-6 col-lg-6" src="{{asset('bundles/classmate/images/goedken.jpg')}}">
+      <img class="col-xs-12 col-sm-12 col-md-6 col-lg-6" src="{{asset('bundles/classmate/images/harper.jpg')}}">
+      <img class="col-xs-12 col-sm-12 col-md-6 col-lg-6" src="{{asset('bundles/classmate/images/koziy.jpg')}}">
+      <img class="col-xs-12 col-sm-12 col-md-6 col-lg-6" src="{{asset('bundles/classmate/images/wakeman.jpg')}}">
+
+       
+    </div>
+    
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_about").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "ClassMate - About";
+        
+    </script>
+{%endblock%}
+
+
+
+    

@@ -1,0 +1,35 @@
+{%extends "ClassMateBundle:Courses:index.html.twig"%}
+
+{% block container -%}
+<style type ="text/css">
+			h2 {letter-spacing:		5px; font-size: .2in; color: #00ADEF; text-transform: uppercase; width: 200px}
+			input {color: #00ADEF; background-color: #fff}
+			#form_submit {}
+</style>
+
+    <div class="container main_container" >
+    <h1>Courses creation</h1>
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a class ="btn btn-primary btn-xs" href="{{ path('class_mate_courses_list') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        
+        $("#project_classmatebundle_courses_submit").attr('class', 'btn btn-primary btn-xs');
+
+        //Changes the page title
+        document.title = "ClassMate - Admin Archive List";
+        
+    </script>
+{%endblock%}
+

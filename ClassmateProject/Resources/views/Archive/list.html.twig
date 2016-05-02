@@ -1,0 +1,69 @@
+{%extends "ClassMateBundle:Archive:index.html.twig"%}
+
+{% block container -%}
+
+    <div class="container main_container">
+        <h2 class="blueH2">Archive list</h2><br>
+
+	    <table class="records_list col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+	        <thead>
+	            <tr>
+	                <th class="hidden-xs">Archive ID</th>
+	                <th>File Name</th>
+	                <th style="text-align: center;">File Type</th>
+	                <th class="hidden-sm hidden-xs" style="text-align: center;">Datecreated</th>
+                    <th class="action_header" style="text-align: right;">Actions</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+		        {% for entity in entities %}
+		            <tr>
+		                <td class="hidden-xs">{{ entity.archiveId }}</td>
+		                <td>{{ entity.fileName }}</td>
+		                <td style="text-align: center;">{{ entity.fileType }}</td>
+		                <td class="hidden-sm hidden-xs" style="text-align: center;">{% if entity.dateCreated %}{{ entity.dateCreated|date('Y-m-d') }}{% endif %}</td>
+		                <td style="text-align: right;">
+		                     <a class="btn btn-primary btn-xs"  href="{{ path('archive_show', { 'id': entity.archiveId }) }}">Show</a>
+		                     <!--<a class="btn btn-primary btn-xs" href="{{ path('archive_edit', { 'id': entity.archiveId }) }}">Edit</a>-->
+		                </td>
+		            </tr>
+		        {% endfor %}
+	        </tbody>
+	    </table>
+	    
+	    <!--
+	    <br>
+	    <br>
+		<a class ="btn btn-primary" href="{{ path('archive_new') }}">
+            Create a New Archive
+        </a>
+    	-->
+        
+    </div>
+{% endblock %}
+
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_admin").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Admin - Archives";
+        
+    </script>
+{%endblock%}
+
+     
+
+
+
+
+
+
+
+
+

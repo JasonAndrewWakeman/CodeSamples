@@ -1,0 +1,95 @@
+
+{%extends "ClassMateBundle:User:index.html.twig"%}
+	
+{%block stylesheets %}
+<style>
+  body {
+    background: white;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
+    -webkit-flex-direction: column;
+  }
+  video {
+    width: 840px;
+    height: 580px;
+    border: 1px solid #e2e2e2;
+  }
+
+  .class-label {
+    color: #FFF;
+  }
+
+  .class-label input {
+    color: #000;
+  }
+</style>
+{%endblock%}
+
+{%block container %}
+  
+
+  <div class=<"container main_container">
+    <br>
+    <br>
+    
+
+  	<div class="video">
+  		  
+        <input type="hidden" id="classid" value="{{course.courseCode}}" readonly>
+        
+        
+        <br>
+  	  <video id="video" autoplay></video>
+  	</div>
+    <audio id="audio" controls></audio>
+		  
+    <div class="buttons">
+      <button class="btn btn-large btn-primary col-12-offset-2 col-xs-8 col-md-offset-1 col-md-2" id="start">Share Screen</button>
+  	  <button class="btn btn-large btn-primary col-12-offset-4 col-xs-8 col-md-2" id="pause">Pause</button>
+      <button class="btn btn-large btn-primary col-12-offset-4 col-xs-8 col-md-2" id="resume">Resume</button>
+      <button class="btn btn-large btn-primary col-12-offset-4 col-xs-8 col-md-2" id="startaudio">Share Audio</button>
+      <button class="btn btn-large btn-primary col-12-offset-4 col-xs-8 col-md-2" onClick = "upload()">upload file</button>
+  	</div>
+
+  </div>
+
+	
+{%endblock%}
+
+{%block javascripts %}
+
+  <script src="{{asset('bundles/classmate/js/app.js')}}"></script>
+  <script>
+function upload() {
+
+  var uploadUrl = Routing.generate('class_mate_upload');
+  $.ajax({
+    type: 'post',
+    url: uploadUrl,
+    data: {typeOf: 'l'},
+      success: function (response) {
+alert(response);
+return false;
+          
+        var data = JSON.parse(response);
+
+          for(var i=0;i<data.cour.length;i++){
+            var obj = data.cour[i];
+       
+            var x = document.getElementById("listenSelect");
+            var option = document.createElement("option");
+            option.text = data.cour[i];
+            x.add(option);
+          }
+    
+    return false;
+
+      }
+  });
+}
+
+//Changes the page title
+        document.title = "Presenter";
+</script>
+ {%endblock%}

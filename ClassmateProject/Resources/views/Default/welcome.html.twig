@@ -1,0 +1,45 @@
+{%extends "ClassMateBundle:Default:index.html.twig"%}
+{%block stylesheets %}
+
+{%endblock%}
+
+{%block container %}
+	<div class="container main_container">
+	    
+	    
+
+	    {% if app.session.get('user') is defined %}
+	    	<span class="home_header_lg">Hello {{name}}</span>
+
+	    	<br><br><br><br>
+	    	<a href="{{path('class_mate_presenter')}}">
+	    		<button class="btn btn-large btn-primary">Present</button>
+	    	</a>
+	    	<br><br>
+	    	<a href="{{path('class_mate_listener')}}">
+	    		<button class="btn btn-large btn-primary">Listen</button>
+	    	</a>
+	    {%endif%}
+		
+	</div> 
+	<br><br>
+	    	<a href="{{path('class_mate_logout')}}">
+	    		<button class="btn btn-large btn-primary">Logout</button>
+	    	</a>
+
+
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_home").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "Welcome to ClassMate";
+        
+    </script>
+{%endblock%}

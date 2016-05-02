@@ -1,0 +1,40 @@
+{%extends "ClassMateBundle:Archive:index.html.twig"%}
+
+{% block container -%}
+<style type ="text/css">
+			h2 {letter-spacing:		5px; font-size: .2in; color: #00ADEF; text-transform: uppercase; width: 200px}
+			input {color: #00ADEF; background-color: #fff}
+			#form_submit {}
+</style>
+
+    <div class="container main_container" >
+    <h2 class="blueH2">Archive Edit</h2><br>
+    <div class="admin_form">
+    	{{ form(edit_form) }}
+
+       	 <ul class="record_actions">
+    	<li>
+    	    <a class="btn btn-primary btn-xs" href="{{ path('class_mate_archive_list') }}">
+        	    Back to the list
+       		 </a>
+    	</li>
+    	<li>{{ form(delete_form) }}</li>
+		</ul>
+	</div>
+{% endblock %}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_admin").attr('class', 'active');
+        
+        $("#form_submit").attr('class', 'btn btn-primary btn-xs');
+
+        //Changes the page title
+        document.title = "ClassMate - Admin - Edit Archive";
+        
+    </script>
+{%endblock%}

@@ -1,0 +1,102 @@
+{%extends "ClassMateBundle:User:index.html.twig"%}
+{%block stylesheets %}
+
+{%endblock%}
+
+{%block javascripts %}
+    <script src="{{asset('bundles/classmate/js/courseChooser.js')}}"></script>
+    <script type="text/javascript">
+      
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_user_home").attr('class', 'active');
+
+  
+
+        //Changes the page title
+        document.title = "Choose a Course";
+        
+    </script>
+{%endblock%}
+
+
+{%block container %}
+
+
+
+	<div class="container main_container">
+	    
+	   {% if error is defined%}
+    <div class="alert-info fade in">
+        <strong>{{error}}</strong>
+    </div>
+    {%endif%}
+
+	    {% if app.session is defined %}
+	       
+            <h2 class="blueH2">Courses You Listen To</h2>
+            
+            <ul id="listenList">
+                {%if listenCourses|length > 0%}
+                    {% for lcourse in listenCourses %}
+                        <li class="course-list-item">
+                            <a href="{{ path('class_mate_course_page', {'courseName': lcourse.courseName, 'userRole': 'L', 'courseID': lcourse.courseId }) }}">
+                                {{ lcourse.courseName }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {%else%}
+                    <li class="course-list-item">
+                        You are not currently a listener in any courses
+                    </li>
+                {%endif%}
+            </ul>
+
+            <br>
+            <div class="row">
+                <a class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" href="{{ path('class_mate_join_course') }}">
+                    Join a Course as a Listener
+                </a>
+            </div>
+            <br><br>
+
+
+            {% if ( app.session.get('user') is defined ) and ((app.session.get('user').getUserType() == "P") or (app.session.get('user').getUserType() == "A")) %}
+                <h2 class="blueH2">Courses You Present For</h2>
+                
+                <ul id="presentList">
+                    {%if presentCourses|length > 0%}   
+                        {% for pcourse in presentCourses %}
+                            <li class="course-list-item">
+                                <a href="{{ path('class_mate_course_page', {'courseName': pcourse.courseName, 'userRole': 'P', 'courseID': pcourse.courseId }) }}">
+                                    {{ pcourse.getCourseName() }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {%else%}
+                        <li class="course-list-item">
+                            You are not currently a presenter for any courses
+                        </li>
+                    {%endif%}
+                </ul>
+
+                <br>
+                <div class="row">
+                    <a class="btn btn-large btn-primary col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 col-md-offset-16 col-md-4 col-lg-offset-4 col-lg-4" href="{{ path('class_mate_create_course') }}">
+                        Create a New Course
+                    </a>
+                </div>
+                <br><br>
+            {%endif%}
+
+
+
+	    {%endif%}
+		
+	</div> 
+
+{%endblock%}
+
+
+

@@ -1,0 +1,41 @@
+{%extends "ClassMateBundle:Archive:index.html.twig"%}
+
+{% block container -%}
+    <style type ="text/css">
+		input 
+        {
+            color: #00ADEF; 
+            background-color: #fff
+        }
+    </style>
+
+    <div class="container main_container">
+
+
+    <h2 class="blueH2">Upload File</h2><br>
+
+    {{ form(form) }}
+
+    <li>
+        <a class="btn btn-primary btn-xs" href="{{path('class_mate_course_page', {'courseName': course.courseName, 'userRole': enrollment.role, 'courseID': course.courseId })}}">
+            Back to Course Page
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        //$("#menu_admin").attr('class', 'active');
+        
+        $("#project_classmatebundle_archive_submit").attr('class', 'btn btn-primary btn-xs');
+
+        //Changes the page title
+        document.title = "ClassMate - Upload File";
+        
+    </script>
+{%endblock%}

@@ -1,0 +1,81 @@
+{%extends "ClassMateBundle:Default:index.html.twig"%}
+{%block stylesheets %}
+    <style>
+        .form-signup {
+            text-align: center;
+        }
+    </style>
+{%endblock%}
+{%block container %}
+    <div class="container main_container" >
+        <form id="form" class="well col-md-offset-3 col-md-6 form-signup" method="POST" action="{{path('class_mate_signup')}}" data-validate="parsley">
+            <h2 class="blueH2">Create New ClassMate Account</h2>
+            <br><br>
+
+            <label class="signup_label">First Name</label>
+            <br>
+            <input type="text" name="firstname" class="input-xlarge" data-trigger="change" data-required="true">
+            <br>
+            
+            <label class="signup_label">Last Name</label>
+            <br>
+            <input type="text" name="lastname" class="input-xlarge" data-trigger="change" data-required="true">
+            <br>
+            
+            <label class="signup_label">Email</label>
+            <br>
+            <input type="text" name="email" class="input-xlarge" data-trigger="change" data-required="true" data-type="email">
+            <br>
+            
+	        <!--
+            <label class="signup_label">Access Level <br>
+                <select class="selector_black" name="access_level" data-required="true"> 
+                    <option value="L">Listener</option>
+                    <option value="P">Presenter</option>
+                    <option value="A">Administrator</option>
+                </select>
+            </label>
+            <br>
+            -->
+
+            <input type="hidden" name="access_level" data-trigger="change" data-required="true" value="P">
+
+            <label class="signup_label">Username</label>
+            <br>
+            <input type="text" id="username" name="username" class="input-xlarge" data-trigger="change" data-required="true">
+            <br>
+            
+            <label class="signup_label">Password</label>
+            <br>
+            <input type="password" id="password" name="password" class="input-xlarge" data-trigger="change" data-required="true">
+            <br>
+            
+            <label class="signup_label">Confirm Password</label>
+            <br>
+            <input type="password" id="passwordre" name="confirm_password" class="input-xlarge" data-trigger="change" data-required="true" data-equalto="#password">
+            <br><br>
+
+            <div>
+                <button class="btn btn-primary" type="submit" >Create Account</button>
+            </div>
+
+        </form>
+    </div>
+
+    
+
+{%endblock%}
+
+{%block javascripts %}
+    <script type="text/javascript">
+        
+        //Handles changing the active button in the header
+        curActive = $(".navbar-nav li.active").attr('id');
+        $("#"+curActive).attr('class', '');
+        $("#menu_signup").attr('class', 'active');
+
+        //Changes the page title
+        document.title = "ClassMate - New User";
+
+    </script>
+{%endblock%}
