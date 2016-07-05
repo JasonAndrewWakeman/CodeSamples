@@ -89,8 +89,7 @@ public class CSCoffeeTask implements CoffeeTask {
 			String sourceLabel = v.label;
 			Vertex v2 = (Vertex) myG.vertices.get(ingList.get(i + 1));
 			String destLabel = v2.label;
-			
-			//adds every vertex returned by shortest path to the combinedList
+			myG.shortestPath(sourceLabel, destLabel, myEdgeMeasure);
 			combinedList.addAll(myG.shortestPath(sourceLabel, destLabel,
 					myEdgeMeasure));
 			// if this is not the last iteration of the for loop remove the

@@ -147,10 +147,10 @@ public class CSGraph<S, T> implements Graph<S, T> {
 		return arr;
 	}
 
-	public int depthFirstTraversal(Graph<S, T> g, int startV) {
+	public void depthFirstTraversal(Graph<S, T> g, int startV) {
 
 		if(this.vertices == null || this.getNumVertices() < 1){
-			return -1;
+			return;
 		}
 		// create a Stack and push the starting vertex onto it.
 
@@ -161,17 +161,9 @@ public class CSGraph<S, T> implements Graph<S, T> {
 
 		// Traverse the graph by popping each element until there are none left.
 		while (!this.updatingStack.isEmpty()) {
-			
-		
 
 			// set inFocus to be the vertex on top of the queue.
 			int indVFocus = (int) this.updatingStack.pop();
-
-			 if (vertices.get(indVFocus).state == 2){ //then we know this vertex has already been processed so we have encountered a cycle and must return null
-				 
-				 return -1;
-			 
-			 }
 
 			// Loop through every edge in inFocus's list of edges.
 			for (int i = 0; i < this.vertices.get(indVFocus).edges.size(); i++) {
@@ -194,21 +186,16 @@ public class CSGraph<S, T> implements Graph<S, T> {
 			// add the current vertex in focus to the Stack of Processed
 			// Vertices (the order they are added can be reversed to find a
 			// topological sort.)
-			 vertices.get(indVFocus).state = 2;
+			// vertices[indVFocus].state = 2;
 
 			this.processedVertices.push(indVFocus);
 
 		}
-		return 0;
 	}
 
 	@Override
 	public List<String> topologicalSort() {
 
-		if(!this.isDirected()){
-			//if not directed return null
-			return null;
-		}
 		// Clear the state of each vertex in vertices.
 		for (Vertex v : this.vertices) {
 			v.parent = -1;
@@ -218,7 +205,7 @@ public class CSGraph<S, T> implements Graph<S, T> {
 
 		Graph<S, T> gPrime = null;
 		Stack<String> reverseOfProcessed = new Stack<String>();
-		depthFirstTraversal(gPrime, 0); 
+		depthFirstTraversal(gPrime, 0); // TODO change to be MY POSITION
 		// pop each index of vertex from the stack in the reverse order it was
 		// processed and add its associated label to listToReturn
 		while (!(this.processedVertices.isEmpty())) {
@@ -229,9 +216,7 @@ public class CSGraph<S, T> implements Graph<S, T> {
 
 		for (int i = 0; i < this.numVertices; i++) {
 			if (this.vertices.get(i).state < 1) {
-				if (depthFirstTraversal(gPrime, i) < 0){ //then there was a cycle and we should return null
-					return null;
-				}
+				depthFirstTraversal(gPrime, i);
 
 				// pop each index of vertex from the stack in the reverse order
 				// it was processed and add its associated label to listToReturn
