@@ -1,0 +1,58 @@
+<!doctype html>  
+<html lang="en">  
+  <body>
+    <div id="future">Please wait while pi is approximated.</div>
+  </body>
+</html>  
+<script>  //begin javascript
+
+  var numSamples = 10000000;
+  var numThreads = 10;
+
+  // numIterations per thread 'or'ed with 0 to make sure we are passing an integer to web worker
+  var numIterations = numSamples / numThreads;
+  numIterations = numIterations | 0; 
+  //variable which will hold the sum of each workers results
+  var total = 0;
+  var arrayOfPromises = [];
+  //get the time we started in milliseconds since 1970
+  var start = new Date().getTime();
+
+  //for each of number of threads, add a new promise to arrayOfPromises
+  for (var i = 0; i < numThreads; i++ ) {
+
+    arrayOfPromises.push(
+	  new Promise(function(resolve, reject) {
+	  	//this promise function will have access to a new worker running 'compute.js' in the background
+	    var worker = new Worker('compute.js');
+	    //add an event listener to this worker which 'onMessage' received, calls an anonymous function to resolve this promise to be the return data of compute.js
+	    worker.addEventListener('message', function(e){
+		  resolve(e.data);
+	    }, false);
+	    //synchronously post a message to this worker containing the number of iterations to perform
+	    worker.postMessage({'numIts': numIterations});
+      })//end promise construction
+    );//end the push to array
+  }//end the for loop
+
+
+  //uses promise.all API to convert an array of (resolved) promises to an array of results and then passes resulting array into anonymous function
+  Promise.all(arrayOfPromises).then(function(arrayOfResults) {
+  	//determine the time it took for all promises to be resolved in milliseconds
+    var elapsed = new Date().getTime() - start;
+	//for each result in results syncrhonously add to total in order promises were constructed
+	arrayOfResults.forEach(addToTotal);
+	//all circleCounts have been added to total so finish MonteCarlo calculation
+	var pi = ((4.0 * total) / numIterations / numThreads);
+	var outputLine1 = "Pi : " + pi; 
+    var outputLine2 = "Time in Milliseconds: " + elapsed;
+	console.log(outputLine1);
+    console.log(outputLine2);
+	document.getElementById("future").innerHTML = outputLine1 + "<br />" + outputLine2
+  });//ends the 'and then' function and finishes the Promise.all
+
+function addToTotal(item) {
+     total = total + item;
+}
+
+</script>       
