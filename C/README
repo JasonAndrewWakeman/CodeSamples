@@ -1,0 +1,39 @@
+*****************************************************************************************************************************
+
+Jason Wakeman ******** jwakeman@iastate.edu
+
+*****All executables of project 1a take in simp files as arguments and expel simp files
+
+DATA STRUCTURES:
+*****The data from .simp is stored in this program within a struct named simple with a width and height and a \
+-------------2 dimensional array of pixel(s).
+*****A pixel is a struct in this program with four unsigned char variables representing red, green, blue, and alpha.
+
+FILES INCLUDED:
+*****crop expects a simp file in, a simp file out, the x and y coordinates of where to start cropping, \
+------------and the width and length of the area to crop. The outfile is the cropped image.
+
+*****bw expects a simp file in and a simp file out. The outfile is the infile converted to black and white.
+
+*****colorshift expects a simp file in, a simp file out, and a string representing a pattern by which to shift colors. \
+------------The expected patterns are {RGB GBR BRG RBG BGR GRB RG GR RB BR GB BG}. The outfile is the infile with its colors\
+------------manipulated in the fassion declared by the pattern.
+
+*****overlay expects a simp file in, another simp file in to lay over the first simp file, a simp file out, and \
+-----------the x and y coordinate to start the overlay. the outfile is the first infile with the second infile lain \
+-----------overtop of it. Depending on the alpha values of the second infile. more or less of its color will prevail.
+
+UNDEFINED BEHAVIOR:
+******In bw the bw value of each color in each pigment is rounded down to the largest whole number. 
+------------ie if the rgb values are 5 6 6 the average will be 5 (5.67 rounded down to 5 and not 6). 
+
+******If any dimensions are outside of the range of where they are suppose to be all executables \
+-----------simply display a message to the output that there was a problem.
+
+SOURCES USED OUTSIDE OF CS229:
+****** http://stackoverflow.com/questions/788903/valid-use-of-goto-for-error-management-in-c
+
+****** http://mrbook.org/tutorials/make/
+
+******Kernighan, Brian W. and Ritchie, Dennis M.. The C Programming Language (Second Edition). Upper Saddle River, New Jersey: 
+	  Prentice-Hall PTR, Feb 2009. Print.
